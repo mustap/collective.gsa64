@@ -1,0 +1,154 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:extend-macro="context/main_template/macros/master"
+      metal:define-macro="master"
+      i18n:domain="plone">
+
+  <body>
+    <metal:no-slot fill-slot="column_one_slot" />
+    <metal:no-slot fill-slot="column_two_slot" />
+
+    <metal:content-core fill-slot="content">
+      <metal:content-core define-macro="content">
+
+        <tal:no-search condition="not: view/search_query">
+          <h1 class="documentFirstHeading" i18n:translate="">
+            Search
+          </h1>
+          <p tal:condition="not: view/display_searchbox"
+             i18n:domain="collective.gsa64"
+             i18n:translate="">
+            Use the search box to make a query.
+          </p>
+        </tal:no-search>
+
+        <tal:search condition="view/search_query">
+          <h1 class="documentFirstHeading" i18n:translate="heading_search_results">
+            Search results
+          </h1>
+        </tal:search>
+
+        <form name="searchform"
+              class="searchPage"
+              tal:attributes="action request/getURL"
+              tal:condition="view/display_searchbox">
+
+          <input class="searchPage"
+                 name="SearchableText"
+                 type="text"
+                 size="25"
+                 title="Search Site"
+                 i18n:attributes="title title_search_title;"
+                 tal:attributes="value view/search_terms;"
+                 />
+
+          <input class="searchPage searchButton"
+                 type="submit"
+                 value="Search"
+                 i18n:attributes="value label_search;"/>
+        </form>
+
+        <tal:results condition="view/search_query">
+          <div id="embedded-search"
+               tal:define="results view/results;
+                           portal_state context/@@plone_portal_state;">
+
+            <span class="discreet">
+              &mdash;
+              <span i18n:translate="batch_x_items_matching_your_criteria"
+                    ><span i18n:name="number"
+                           tal:omit-tag=""
+                           tal:content="view/estimated_results">234</span>
+              items matching your search terms</span>
+            </span>
+
+            <dl class="portalMessage error" tal:condition="view/error">
+              <dt i18n:translate="">
+                Error
+              </dt>
+              <dd tal:content="view/error"
+                  i18n:translate="">
+                The status message.
+              </dd>
+            </dl>
+
+            <div id="search-results"
+                 tal:condition="view/use_transform"
+                 tal:content="structure view/render_transformed">
+
+              <!-- XSLT-transformed content -->
+
+            </div>
+
+            <div id="search-results" tal:condition="not: view/use_transform">
+
+              <!-- Results navigation -->
+
+              <div class="navigation" tal:define="navigation view/navigation" tal:condition="navigation">
+
+                <tal:previous-next define="next navigation/next; prev navigation/prev">
+
+                  <a tal:condition="prev" tal:attributes="href prev" i18n:translate="label_previous">
+                    Previous
+                  </a>
+                  <span tal:condition="python: next and prev">
+                    |
+                  </span>
+                  <a tal:condition="next" tal:attributes="href next" i18n:translate="label_next">
+                    Next
+                  </a>
+
+                </tal:previous-next>
+
+              </div>
+
+              <div id="keymatchs" tal:define="keymatchs view/get_keymatch" tal:condition="keymatchs">
+	             <span i18n:domain="collective.gsa64" i18n:translate="">KeyMatch</span>
+                 <div tal:repeat="match keymatchs">
+	                 <a href="" 
+	                    title="" 
+	                    tal:attributes="href match/url; 
+	                                    title match/title" tal:content="match/title" />    
+			     </div> 	
+              </div>
+
+              <dl class="searchResults" tal:condition="results">
+                <tal:result repeat="result results">
+
+                  <metal:result define-slot="result">
+                    <dt tal:attributes="class result/normalized_content_type">
+                      <a tal:attributes="href result/url"
+                         tal:content="structure result/heading"
+                         />
+                    </dt>
+                    <dd>
+                      <span tal:content="structure result/description" />
+
+                      <span class="documentByLine"
+                            tal:define="creator result/creator"
+                            tal:condition="creator">
+
+                        <span class="documentAuthor" i18n:translate="label_by_author">
+                          by
+                          <tal:block
+                              i18n:name="author"
+                              content="creator"
+                              />
+                        </span>
+                      </span>
+                    </dd>
+                  </metal:result>
+                </tal:result>
+              </dl>
+            </div>
+          </div>
+        </tal:results>
+      </metal:content-core>
+    </metal:content-core>
+
+  </body>
+</html>
+

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<registry>
+  <records interface="collective.gsa64.interfaces.IConnectionSettings" />
+  <records interface="collective.gsa64.interfaces.ISearchSettings" />
+  <records interface="collective.gsa64.interfaces.IGeneralSettings" />
+</registry>

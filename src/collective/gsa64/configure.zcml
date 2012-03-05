@@ -1,0 +1,81 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+   i18n_domain="collective.gsa64">
+
+  <include package="plone.app.registry" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Integration to Google Search Appliance"
+      directory="profiles/default"
+      description="Registers control panel and default settings."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <!-- Control panel -->
+
+  <browser:page
+      name="gsa-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.ControlPanel"
+      permission="cmf.ManagePortal"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+  <browser:page
+      name="gsa-search"
+      for="Products.CMFCore.interfaces.IFolderish"
+      class=".browser.search.SearchView"
+      permission="zope2.View"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+  <browser:viewlet
+      name="meta-robots"
+      manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+      for="Products.Archetypes.interfaces.IBaseObject"
+      permission="zope2.View"
+      class=".browser.robots.RobotsViewlet"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+  <!-- Event handlers -->
+
+  <subscriber
+      for="Products.Archetypes.interfaces.IBaseObject
+           zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+      handler="collective.gsa64.events.handle_created_event"
+      />
+
+  <subscriber
+      for="Products.Archetypes.interfaces.IBaseObject
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler="collective.gsa64.events.handle_modified_event"
+      />
+
+  <subscriber
+     for="Products.Archetypes.interfaces.IBaseObject
+          zope.container.interfaces.IObjectRemovedEvent"
+     handler="collective.gsa64.events.handle_removed_event"
+     />
+
+  <subscriber
+     for="Products.Archetypes.interfaces.IBaseObject
+          zope.app.container.interfaces.IObjectMovedEvent"
+     handler="collective.gsa64.events.handle_moved_event"
+     />
+
+  <!-- Handle the workflow status change -->
+  <subscriber
+     for="Products.Archetypes.interfaces.IBaseObject
+          Products.CMFCore.interfaces.IActionSucceededEvent"
+     handler="collective.gsa64.events.handle_modified_event"
+     />
+
+  <subscriber handler="collective.gsa64.events.publish_feed" />
+
+</configure>

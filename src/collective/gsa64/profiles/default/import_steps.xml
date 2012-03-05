@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<import-steps>
+
+  <import-step
+      id="collective.gsa64.setuphandlers.add_search_script"
+      handler="collective.gsa64.setuphandlers.add_search_script"
+      title="Add search script"
+      version="2010-12-16">
+    Adds search script object to portal root"
+  </import-step>
+
+</import-steps>
+
