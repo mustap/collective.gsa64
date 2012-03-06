@@ -32,7 +32,7 @@
         </tal:search>
 
         <form name="searchform"
-              class="searchPage"
+              class="searchingPage"
               tal:attributes="action request/getURL"
               tal:condition="view/display_searchbox">
 
@@ -45,7 +45,7 @@
                  tal:attributes="value view/search_terms;"
                  />
 
-          <input class="searchPage searchButton"
+          <input class="searchingPage searchButton"
                  type="submit"
                  value="Search"
                  i18n:attributes="value label_search;"/>
