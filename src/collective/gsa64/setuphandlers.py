@@ -6,9 +6,9 @@ def add_search_script(context):
 	
     portal = context.getSite()
 
-	versions = portal.migration_tool.coreVersions()
+    versions = portal.portal_migration.coreVersions()
 	
-	if(versions.get('Plone', versions.get('Plone Instance', '1.0')) >= '4.2b1')
+    if(versions.get('Plone', versions.get('Plone Instance', '1.0')) >= '4.2b1'):
         return
 
     if 'search' in portal.objectIds():
