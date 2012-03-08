@@ -19,6 +19,15 @@
 
   <!-- Control panel -->
 
+  <browser:page
+      name="gsa-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.ControlPanel"
+      permission="cmf.ManagePortal"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+
   <browser:page zcml:condition="have plone-42"
       name="search"
       for="Products.CMFCore.interfaces.IFolderish"
