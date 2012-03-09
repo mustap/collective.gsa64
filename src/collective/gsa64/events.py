@@ -62,6 +62,9 @@ def get_metadata(context):
     provider.update()
     html = provider.render()
 
+    if not html:
+        return ()
+
     document = lxml.html.fromstring(html)
     return tuple(
         dict(meta.attrib) for meta in document.findall('.//meta')
