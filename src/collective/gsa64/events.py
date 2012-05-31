@@ -93,13 +93,23 @@ def annotate_add(context):
     if IPloneSiteRoot in providedBy(context):
         return
 
-    annotate_action(
-        context.REQUEST,
-        context.absolute_url(),
-        "add",
-        context.getContentType(),
-        get_metadata(context),
-        )
+    try:
+        annotate_action(
+            context.REQUEST,
+            context.absolute_url(),
+            "add",
+            context.getContentType(),
+            get_metadata(context),
+            )
+    except AttributeError:
+        #dexterity content
+        annotate_action(
+            context.REQUEST,
+            context.absolute_url(),
+            "add",
+            context.content_type(),
+            get_metadata(context),
+            )
 
 
 def verify_anonymous(context):
