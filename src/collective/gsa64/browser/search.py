@@ -263,6 +263,11 @@ class SearchView(BrowserView):
     def iter_results(self):
         document = self._get_results()
         for result in document.findall('.//R'):
+
+            mimetype = result.attrib.get('MIME')
+            if mimetype:
+                mimetype = mimetype.split('/')[1].upper() 
+
             metadata = dict(
                 (result.attrib['N'], result.attrib['V'])
                 for result in result.xpath('MT')
@@ -293,6 +298,7 @@ class SearchView(BrowserView):
                 # include metadata dictionary for 3rd party
                 # customization
                 'metadata': metadata,
+                'mimetype': mimetype,
                 }
 
     def get_keymatch(self):
