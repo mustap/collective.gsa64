@@ -89,4 +89,32 @@
 
   <subscriber handler="collective.gsa64.events.publish_feed" />
 
+  <configure zcml:condition="installed plone.dexterity" >
+      <subscriber
+          for="plone.dexterity.interfaces.IDexterityContent
+               zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+          handler="collective.gsa64.events.handle_created_event"
+          />
+      <subscriber
+          for="plone.dexterity.interfaces.IDexterityContent
+               zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+          handler="collective.gsa64.events.handle_modified_event"
+          />
+      <subscriber
+         for="plone.dexterity.interfaces.IDexterityContent
+              zope.container.interfaces.IObjectRemovedEvent"
+         handler="collective.gsa64.events.handle_removed_event"
+         />
+      <subscriber
+         for="plone.dexterity.interfaces.IDexterityContent
+              zope.app.container.interfaces.IObjectMovedEvent"
+         handler="collective.gsa64.events.handle_moved_event"
+         />
+      <subscriber
+         for="plone.dexterity.interfaces.IDexterityContent
+              Products.CMFCore.interfaces.IActionSucceededEvent"
+         handler="collective.gsa64.events.handle_modified_event"
+         />
+  </configure>
+
 </configure>
